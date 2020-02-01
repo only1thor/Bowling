@@ -16,6 +16,8 @@ public class LineClass()
         return score;
     }
 
+   //TODO: ad a loadData method to avoid making multiple objects for each game.
+
     public void LineClass(String scoreString)
     {
         // parse the string into the data vector for easy scoring math. 
