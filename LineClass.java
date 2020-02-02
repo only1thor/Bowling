@@ -10,8 +10,20 @@ public class LineClass
         int roundNumber = 0;
         for( int i=0; i < this.gameData.length; i++ )
         {
-            if(roundNumber > 30)
+			// Final Round, special case. 
+            if(roundNumber > 8)
             {
+				// If the last 2 throws are either a spare or strikes,
+				// then add the bonus throw. 
+				int tmp = getVal(i)+getVal(i+1);
+				if(tmp > 9)
+				{
+					score += tmp + getVal(i+2);
+				}
+				else 
+				{
+					score += tmp;
+				}
                 break;
             }
             //char c = this.gameData[i];
@@ -21,7 +33,8 @@ public class LineClass
                     roundNumber++;
                     continue;
                 case '/':
-                    score += getVal(i) + getVal(i +1);
+					score += getVal(i) + getVal(i +2);
+					break;
                 case 'x':
                     score += 10;
                     int lookForward = 2;
@@ -39,14 +52,13 @@ public class LineClass
                             --lookForward;
                             ++nextIndex;
                         }
-                    }while(lookForward > 1 );
+                    }while(lookForward > 0 );
                     break;
                 default:
                 score += getVal(i);
             }
-            System.out.println(score);
-
-        }
+		}
+		
 
     }
 
@@ -86,8 +98,9 @@ public class LineClass
     }
 
     public static void main(String[] args)
-    {
-        LineClass test = new LineClass("1/ 18 x 11 1- 32 32 32 32 32-"); //"1/ 2- x 32 9- x 32 21"
+    {//									1  2  3  4  5  6  7  8  9 10
+		LineClass test = new LineClass("11 11 11 11 x 22 22 22 22 xxx"); 
+		//"1/ 2- x 32 9- x 32 21" "1/ 18 x 11 1- 32 32 32 32 32-"
         System.out.println(test.getScore());
     }
 
