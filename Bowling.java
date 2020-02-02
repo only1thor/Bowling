@@ -1,15 +1,25 @@
-public class Bowling(void)
+public class Bowling
 {
-    //have some valid sequences here. 
-    String lineOfScores = "X X X X X X X X X X X X";
+    public static void main(String[] args) {
+        //have some valid sequences here. 
+        String lineOfScores[] = {
+            "X X X X X X X X X X X X",
+            "11 11 11 11 x 22 22 22 22 x x x",
+            "1/ 2- x 32 9- x 32 21",
+            "1/ 18 x 11 1- 32 32 32 32 32-"};
 
-    //TODO: write more tests cases.
+        // Create an empty "line" object here
+        LineClass gameObject = new LineClass();
 
-    //create a "line" object here
-    LineClass gameObject = new LineClass(lineOfScores);
-
-    //output the scores. 
-    System.out.println("Score is:" + gameObject.score());
-
-    //TODO: load, and test more test cases.
+        // Test the cases defined in "lineOfScores".
+        for(String line : lineOfScores)
+        {
+            // Print current line:
+            System.out.println("\n" + line);
+            // Load current line. 
+            gameObject.loadGameData(line);
+            // Output the scores. 
+            System.out.println("Score is:" + gameObject.getScore());
+        }
+    }
 }

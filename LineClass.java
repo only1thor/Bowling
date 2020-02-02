@@ -5,29 +5,46 @@ public class LineClass
 
     private void calculateScore()
     {
-        // some math to produce a sum. 
-        // score should be set here. 
-        int roundNumber = 0;
+		// Find the total score.
+        int roundNumber = 0; // a var to track number of rounds. 
         for( int i=0; i < this.gameData.length; i++ )
         {
 			// Final Round, special case. 
             if(roundNumber > 8)
             {
-				// If the last 2 throws are either a spare or strikes,
-				// then add the bonus throw. 
-				int tmp = getVal(i)+getVal(i+1);
-				if(tmp > 9)
+
+				if(getVal(i)>9)
 				{
-					score += tmp + getVal(i+2);
+					if(getVal(i+2)>9)
+					{
+						score += 20 + getVal(i + 4);
+					}
+					else
+					{
+						score += 10 + getVal(i+2)+getVal(i+3);
+					}
 				}
 				else 
 				{
-					score += tmp;
+					// If the last throw is a spare
+					// then add the bonus throw. 
+					int tmp = getVal(i)+getVal(i+1);
+					if(tmp > 9)
+					{
+						score += tmp + getVal(i+2);
+					}
+					// If it's not a spare, then the game is over.
+					else 
+					{
+						score += tmp;
+					}
+
 				}
                 break;
-            }
-            //char c = this.gameData[i];
-            switch (this.gameData[i])
+			}
+			
+			// Find value of each trow. 
+            switch (gameData[i])
             {
                 case ' ':
                     roundNumber++;
@@ -35,38 +52,32 @@ public class LineClass
                 case '/':
 					score += getVal(i) + getVal(i +2);
 					break;
-                case 'x':
+				case 'x':
+				case 'X':
                     score += 10;
                     int lookForward = 2;
-                    int nextIndex = 1;
+                    int nextIndex = 2;
                     do
                     {
-                        if(gameData[i + nextIndex] == ' ')
-                        {
-                            ++nextIndex;
-                            continue;
-                        }
-                        else
+                        if(gameData[i + nextIndex] != ' ')
                         {
                             score += getVal(i + nextIndex);
                             --lookForward;
-                            ++nextIndex;
-                        }
+						}
+						++nextIndex;
                     }while(lookForward > 0 );
                     break;
                 default:
                 score += getVal(i);
             }
 		}
-		
-
     }
 
     public int getVal(int indexOfChar)
     {
         switch (gameData[indexOfChar])
         {
-            //
+			case 'X':
             case 'x':
             return 10;
             case '/':
@@ -81,6 +92,7 @@ public class LineClass
 
     public void loadGameData(String s)
     {
+		this.score = 0;
         this.gameData = s.toCharArray();
         this.calculateScore();
     }
@@ -90,18 +102,21 @@ public class LineClass
         return score;
     }
 
-   //TODO: ad a loadData method to avoid making multiple objects for each game.
-
     public LineClass(String scoreString)
     {
         loadGameData(scoreString);
-    }
-
+	}
+	
+	public LineClass()
+	{
+		System.out.println("Empty line made.");
+	}
+/*
     public static void main(String[] args)
-    {//									1  2  3  4  5  6  7  8  9 10
+    {
 		LineClass test = new LineClass("11 11 11 11 x 22 22 22 22 xxx"); 
 		//"1/ 2- x 32 9- x 32 21" "1/ 18 x 11 1- 32 32 32 32 32-"
         System.out.println(test.getScore());
     }
-
+*/
 }
